@@ -23,7 +23,9 @@ module WebMock
       method = method.to_s
       request_stubs_count = self.request_stubs.count
       self.request_stubs.delete_if do |stub|
-        stub.method_pattern.to_s == method && stub.uri_pattern.to_s =~ uri_regexp
+        method_str = stub.request_pattern.method_pattern.to_s
+        uri_str = stub.request_pattern.uri_pattern.to_s
+        method_str == method && uri_str =~ uri_regexp
       end
       request_stubs_count != self.request_stubs.count
     end
