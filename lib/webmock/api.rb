@@ -17,6 +17,9 @@ module WebMock
       alias :request :a_request
     end
 
+    def unstub_request(method, uri_regexp)
+      WebMock::StubRegistry.instance.reset_stub(method, uri_regexp)
+    end
 
     def assert_requested(*args, &block)
       if not args[0].is_a?(WebMock::RequestStub)

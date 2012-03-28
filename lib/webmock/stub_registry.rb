@@ -17,6 +17,19 @@ module WebMock
       self.request_stubs = []
     end
 
+    # Find and remove request_stub by request method and uri_regexp
+    # returns true if request_stub found
+    def reset_stub(method, uri_regexp)
+      method = method.to_s
+      request_stubs_count = self.request_stubs.count
+      self.request_stubs.delete_if do |stub|
+        method_str = stub.request_pattern.method_pattern.to_s
+        uri_str = stub.request_pattern.uri_pattern.to_s
+        method_str == method && uri_str =~ uri_regexp
+      end
+      request_stubs_count != self.request_stubs.count
+    end
+
     def register_global_stub(&block)
       # This hash contains the responses returned by the block,
       # keyed by the exact request (using the object_id).
